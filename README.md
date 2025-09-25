@@ -63,10 +63,13 @@ node server.js
 Open your browser to http://<PUBLIC_IP>:8080/convert?lbs=150 or test with curl:
 curl 'http://<PUBLIC_IP>:8080/convert?lbs=150'
 ```
-5. Install node modules and run as Service (systemd)
+5. Run as Service (systemd)
   ```bash
- npm install
+ # Create a systemd unit
+sudo bash -c 'cat >/etc/systemd/system/p1.service <<"UNIT"\n[Unit]\nDescription=CS454 Project 1 service\nAfter=network.target\n\n[Service]\nUser=ec2-user\nWorkingDirectory=/home/ec2-user/p1\nExecStart=/usr/bin/node /home/ec2-user/p1/server.js\nRestart=always\nEnvironment=PORT=8080\n\n[Install]\nWantedBy=multi-user.target\nUNIT'
+sudo systemctl daemon-reload
 sudo systemctl enable --now p1
+sudo systemctl status p1 --no-pager
 ```
 6. Test cases and Output
 <img width="1920" height="1200" alt="Screenshot 2025-09-24 170811" src="https://github.com/user-attachments/assets/c507ed0c-91d9-498c-b6c8-650ef51bd594" />
@@ -74,4 +77,5 @@ sudo systemctl enable --now p1
 7. Cleanup & Cost notes
    - EC2 instance has been terminated and deleted to avoid further costs
    - Associated key pair has been deleted as well
+
 
